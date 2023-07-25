@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Angular-CI
+name: Kamban-CI
 
 # Controls when the workflow will run
 on:
@@ -22,25 +22,29 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v3
-  
+
       # Setup nodejs
       - name: Setup nodejs
         uses: actions/setup-node@v3.7.0
-        with: 
+        with:
           node-version: "18"
-          
+
       # Install dependencies
       - name: Install deps
         run: npm i
-        
+
       # Build app of production
       - name: Build app bundle
         run: npm run build:prod
 
+      # Route file renaming
+      - name: Rename index for routing
+        run: mv dist/kamban/index.html dist/kamban/404.html
+
       # Deploy to Github pages
       - name: Deploy to pages
         uses: crazy-max/ghaction-github-pages@v3.1.0
-        with: 
-          build_dir: dist/
-        env: 
+        with:
+          build_dir: dist/kamban
+        env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
