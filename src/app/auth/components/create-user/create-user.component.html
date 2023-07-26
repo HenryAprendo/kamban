@@ -1,1 +1,42 @@
-<p>create-user works!</p>
+
+<form class="space-y-3" [formGroup]="createForm">
+
+  <mat-form-field color="primary" class="w-full">
+    <mat-label>Fullname</mat-label>
+    <input matInput type="text" placeholder="Tom snowden" formControlName="fullname" />
+    <mat-error *ngIf="fullNameField?.hasError('required')" >This field is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" placeholder="tom@hotmail.com" formControlName="email" />
+    <mat-error *ngIf="emailField?.hasError('email')" >Please enter a valid email address</mat-error>
+    <mat-error *ngIf="emailField?.hasError('required')" >Email is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="********" formControlName="password"/>
+    <mat-error *ngIf="passwordField?.hasError('required')" >This field is required</mat-error>
+    <mat-error *ngIf="passwordField?.hasError('minlength')" >minimum 8 characters</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Confirm password</mat-label>
+    <input matInput type="password" placeholder="********" formControlName="confirmPassword" />
+    <mat-error *ngIf="confirmPasswordField?.hasError('required')" >This field is required and it must be the same initial password.</mat-error>
+  </mat-form-field>
+
+  <button type="submit" [disabled]="createForm.invalid" mat-raised-button color="primary" >Create user</button>
+</form>
+
+
+   <!-- <div *ngIf="createForm.get('confirmPassword')?.touched && createForm.errors " >
+      <mat-error *ngIf="createForm.hasError('match_password')">They are not the same</mat-error>
+    </div> -->
+
+
+
+
+
+
