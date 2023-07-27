@@ -1,5 +1,5 @@
 
-<form class="space-y-3" [formGroup]="createForm">
+<form class="space-y-3" [formGroup]="createForm" (ngSubmit)="sendDataUser()">
 
   <mat-form-field color="primary" class="w-full">
     <mat-label>Fullname</mat-label>

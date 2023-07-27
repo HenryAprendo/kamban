@@ -1,5 +1,5 @@
 
-<form class="space-y-3" [formGroup]="loginForm">
+<form class="space-y-3" [formGroup]="loginForm" (ngSubmit)="sendDataAuthentication()">
 
   <mat-form-field class="w-full">
     <mat-label>Email</mat-label>

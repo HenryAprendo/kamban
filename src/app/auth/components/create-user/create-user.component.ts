@@ -2,11 +2,11 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MyValidators } from './../../../util/validators';
+import { Router } from '@angular/router';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-
 
 
 @Component({
@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class CreateUserComponent {
 
   fb = inject(FormBuilder);
+  router = inject(Router);
 
   createForm!:FormGroup;
 
@@ -39,6 +40,17 @@ export class CreateUserComponent {
         validators: MyValidators.matchPasswords
       }
     );
+  }
+
+  sendDataUser(){
+    if(this.createForm.valid){
+      console.log(this.createForm.value);
+      this.router.navigate(['auth/login']);
+    }
+    else {
+      this.createForm.markAllAsTouched();
+    }
+
   }
 
   get fullNameField(){

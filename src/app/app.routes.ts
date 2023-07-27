@@ -10,4 +10,8 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes').then(routes => routes.authRoutes)
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./website/dashboard.routes').then(routes => routes.dashboardRoutes)
+  }
 ];
