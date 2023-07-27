@@ -1,1 +1,44 @@
-<p>{{mobileQuery.matches}}</p>
+
+<div class="flex flex-col absolute inset-0" >
+  <mat-sidenav-container class="flex-1">
+    <mat-sidenav
+      #side
+      [opened]="mobileQuery.matches"
+      [mode]="mobileQuery.matches ? 'side' : 'over' "
+      class="w-72"
+    >
+      navegacion
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar class="gap-x-4" color="primary">
+
+          <button
+            color="primary"
+            type="button"
+            (click)="side.toggle()"
+            [class.sm:hidden]="mobileQuery.matches"
+            mat-mini-fab
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+
+          <h2 class="text-base m-0 sm:text-xl">Platform Launch</h2>
+          <span class="flex-grow"></span>
+          <button class="hover:bg-indigo-800" type="button" mat-button >
+            <mat-icon>add</mat-icon>
+            <span>Add task</span>
+          </button>
+      </mat-toolbar>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+
+
+
+
+
+
+
+
+

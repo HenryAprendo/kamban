@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { RouterOutlet } from '@angular/router';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +14,7 @@ import { MatToolbarModule} from '@angular/material/toolbar';
   standalone: true,
   imports: [
     CommonModule,
+    RouterOutlet,
     MatSidenavModule,
     MatToolbarModule,
     MatButtonModule,
