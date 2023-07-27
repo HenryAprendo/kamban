@@ -1,1 +1,19 @@
-<p>login works!</p>
+
+<form class="space-y-3" [formGroup]="loginForm">
+
+  <mat-form-field class="w-full">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" placeholder="tom@hotmail.com" formControlName="email" />
+    <mat-error *ngIf="emailField?.hasError('email')" >Please enter a valid email address</mat-error>
+    <mat-error *ngIf="emailField?.hasError('required')" >Email is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="********" formControlName="password"/>
+    <mat-error *ngIf="passwordField?.hasError('required')" >This field is required</mat-error>
+    <mat-error *ngIf="passwordField?.hasError('minlength')" >minimum 8 characters</mat-error>
+  </mat-form-field>
+
+  <button type="submit" [disabled]="loginForm.invalid" mat-raised-button color="primary" >Login</button>
+</form>
