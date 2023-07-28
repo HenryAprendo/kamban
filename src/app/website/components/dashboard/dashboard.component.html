@@ -7,24 +7,39 @@
       [mode]="mobileQuery.matches ? 'side' : 'over' "
       class="w-72"
     >
-      navegacion
+      <mat-toolbar color="primary">
+        <button
+          color="primary"
+          type="button"
+          (click)="side.toggle()"
+          mat-mini-fab
+        >
+          <mat-icon class="rotate-90" >menu</mat-icon>
+        </button>
+        <h1 class="mb-0 ml-4 font-bold tracking-widest">Kamban</h1>
+      </mat-toolbar>
+
+      <button type="button" mat-button color="primary" >
+        <mat-icon>dashboard</mat-icon>
+        <span>+ Create new board</span>
+      </button>
     </mat-sidenav>
     <mat-sidenav-content>
-      <mat-toolbar class="gap-x-4" color="primary">
+      <mat-toolbar class="gap-x-4" color="primary" >
 
           <button
-            color="primary"
             type="button"
+            color="primary"
             (click)="side.toggle()"
             [class.sm:hidden]="mobileQuery.matches"
             mat-mini-fab
           >
-            <mat-icon>menu</mat-icon>
+            <mat-icon class="rotate-90">menu</mat-icon>
           </button>
 
           <h2 class="text-base m-0 sm:text-xl">Platform Launch</h2>
           <span class="flex-grow"></span>
-          <button class="hover:bg-indigo-800" type="button" mat-button >
+          <button class="hover:bg-indigo-800" type="button" mat-button>
             <mat-icon>add</mat-icon>
             <span>Add task</span>
           </button>
