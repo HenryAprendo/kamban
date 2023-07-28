@@ -19,10 +19,18 @@
         <h1 class="mb-0 ml-4 font-bold tracking-widest">Kamban</h1>
       </mat-toolbar>
 
-      <button type="button" mat-button color="primary" >
+      <mat-action-list>
+        <button mat-list-item *ngFor="let item of listBoard | async" >
+          <mat-icon matListItemIcon >dashboard</mat-icon>
+          <mat-list-item>{{item.title}}</mat-list-item>
+        </button>
+      </mat-action-list>
+
+      <button type="button" mat-button color="primary" (click)="createNewBoard()" >
         <mat-icon>dashboard</mat-icon>
         <span>+ Create new board</span>
       </button>
+
     </mat-sidenav>
     <mat-sidenav-content>
       <mat-toolbar class="gap-x-4" color="primary" >
