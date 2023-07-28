@@ -7,3 +7,5 @@ export interface Board {
   listDoing: Task[];
   listDone: Task[];
 }
+
+export interface CreateBoardDTO extends Omit<Board, 'boardId'> { };
