@@ -1,0 +1,11 @@
+<div
+  cdkDropList
+  #todoList="cdkDropList"
+  [cdkDropListData]="taskList"
+  (cdkDropListDropped)="drop($event)"
+>
+  <app-card-drag
+    *ngFor="let task of taskList"
+    [item]="task"
+  />
+</div>

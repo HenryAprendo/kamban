@@ -9,15 +9,17 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { MatCardModule } from '@angular/material/card';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropListGroup } from '@angular/cdk/drag-drop';
 
-import { BoardService } from './../../../services/board.service';
-import { Board } from './../../../model/board.model';
-import { Task, States, SubTasks } from './../../../model/task.model';
+import { BoardService } from '../../../services/board.service';
+import { Board } from '../../../model/board.model';
+import { Task, States } from '../../../model/task.model';
 import { Observable } from 'rxjs';
 import { DialogInputDataComponent } from '../dialog-input-data/dialog-input-data.component';
 
+import { ContainerDrapComponent } from '../../components/container-drap/container-drap.component';
+import { CardDragComponent } from '../../components/card-drag/card-drag.component';
+import { CardListComponent } from '../../components/card-list/card-list.component';
 
 const testBoard:Board = {
   boardId: 0,
@@ -168,11 +170,11 @@ const testBoard:Board = {
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatCardModule,
     MatDialogModule,
     CdkDropListGroup,
-    CdkDropList,
-    CdkDrag
+    ContainerDrapComponent,
+    CardDragComponent,
+    CardListComponent
   ],
   templateUrl: './dashboard.component.html',
   styles: [
@@ -230,12 +232,6 @@ export class DashboardComponent implements OnDestroy {
         event.currentIndex
       );
     }
-  }
-
-  numberSubstasksDone(subtasks:SubTasks[]){
-    const taskDone = subtasks.filter(item => item.done === true);
-    const result = `${taskDone.length} of ${subtasks.length} substasks`;
-    return result;
   }
 
   private newBoard(title:string): Board {
