@@ -1,6 +1,7 @@
 
 <div class="flex flex-col absolute inset-0" >
   <mat-sidenav-container class="flex-1">
+
     <mat-sidenav
       #side
       [opened]="mobileQuery.matches"
@@ -30,10 +31,10 @@
         <mat-icon>dashboard</mat-icon>
         <span>+ Create new board</span>
       </button>
-
     </mat-sidenav>
+
     <mat-sidenav-content>
-      <mat-toolbar class="gap-x-4" color="primary" >
+      <mat-toolbar class="sticky top-0 z-10 gap-x-4" color="primary" >
 
           <button
             type="button"
@@ -52,6 +53,65 @@
             <span>Add task</span>
           </button>
       </mat-toolbar>
+
+      <div *ngIf="actualBoard" class="grid grid-cols-1 sm:grid-cols-3" cdkDropListGroup>
+
+        <div class="p-3">
+          <h2>Todo</h2>
+          <div
+            cdkDropList
+            #todoList="cdkDropList"
+            [cdkDropListData]="actualBoard.listTodo"
+            (cdkDropListDropped)="drop($event)"
+            class="space-y-3"
+          >
+            <mat-card cdkDrag *ngFor="let item of actualBoard.listTodo" class="cursor-pointer">
+              <mat-card-header>
+                <mat-card-title>{{item.title}}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="p-3">
+          <h2>Doing</h2>
+          <div
+            cdkDropList
+            #doingList="cdkDropList"
+            [cdkDropListData]="actualBoard.listDoing"
+            (cdkDropListDropped)="drop($event)"
+            class="space-y-3"
+          >
+            <mat-card cdkDrag *ngFor="let item of actualBoard.listDoing" class="cursor-pointer">
+              <mat-card-header>
+                <mat-card-title>{{item.title}}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="p-3">
+          <h2>Done</h2>
+          <div
+            cdkDropList
+            #doneList="cdkDropList"
+            [cdkDropListData]="actualBoard.listDone"
+            (cdkDropListDropped)="drop($event)"
+            class="space-y-3"
+          >
+            <mat-card cdkDrag *ngFor="let item of actualBoard.listDone" class="cursor-pointer">
+              <mat-card-header>
+                <mat-card-title>{{item.title}}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+      </div>
+
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
