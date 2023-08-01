@@ -16,6 +16,7 @@ import { Board } from '../../../model/board.model';
 import { Task, States } from '../../../model/task.model';
 import { Observable } from 'rxjs';
 import { DialogInputDataComponent } from '../dialog-input-data/dialog-input-data.component';
+import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
 
 import { ContainerDrapComponent } from '../../components/container-drap/container-drap.component';
 import { CardDragComponent } from '../../components/card-drag/card-drag.component';
@@ -202,7 +203,10 @@ export class DashboardComponent implements OnDestroy {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
   }
 
-  openDialog() {
+  /**
+   * Abre el cuadro de dialogo que permite crear un panel
+   */
+  openDialogAddBoard() {
     const dialogRef = this.dialog.open(DialogInputDataComponent,{
       data: {title: this.defaultTitle}
     });
@@ -216,6 +220,25 @@ export class DashboardComponent implements OnDestroy {
     })
   }
 
+  openDialogAddTask() {
+    const dialogRef = this.dialog.open(DialogAddTaskComponent,{
+      data: { }
+    });
+
+    // dialogRef.afterClosed().subscribe(newTitle => {
+    //   if(newTitle !== undefined && newTitle.length > 0){
+    //     const newBoard = this.newBoard(newTitle)
+    //     this.boardService.addBoard(newBoard);
+    //     this.actualBoard = newBoard;
+    //   }
+    // })
+  }
+
+  /**
+   *
+   * Actualiza cada contenedor cuando se han movido las tareas dentro del mismo array o cuando se han pasado a otro contenedor habilitado.
+   * @param event tiene información acerca de como se han movido las tareas dentro de los contenedores.
+   */
   drop(event:CdkDragDrop<Task[]>){
     if(event.previousContainer === event.container){
       moveItemInArray(

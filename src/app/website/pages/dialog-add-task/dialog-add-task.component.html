@@ -1,0 +1,43 @@
+
+<form [formGroup]="taskForm" class="w-96 max-h-[630px] overflow-auto" >
+  <mat-card>
+    <mat-card-header class="mb-8">
+      <mat-card-title>Add new task</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="flex flex-col">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input type="text" matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <div formArrayName="subtasks" class="mb-8" >
+        <h2 class="text-lg">Subtask</h2>
+        <mat-form-field *ngFor="let task of subTasks.controls; let i=index" class="w-full">
+          <input id="index-{{i}}" matInput type="text" [formControlName]="i">
+        </mat-form-field>
+
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="addSubtask()" class="w-full" >+ Add New Subtask</button>
+        </mat-card-actions>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let option of status" [value]="option.value" >{{option.valueView}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" class="w-full" >Create task</button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+
+</form>
+

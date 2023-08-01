@@ -27,7 +27,7 @@
         </button>
       </mat-action-list>
 
-      <button type="button" mat-button color="primary" (click)="openDialog()" >
+      <button type="button" mat-button color="primary" (click)="openDialogAddBoard()" >
         <mat-icon>dashboard</mat-icon>
         <span>+ Create new board</span>
       </button>
@@ -48,7 +48,7 @@
 
           <h2 class="text-base m-0 sm:text-xl">Platform Launch</h2>
           <span class="flex-grow"></span>
-          <button class="hover:bg-indigo-800" type="button" mat-button>
+          <button class="hover:bg-indigo-800" type="button" mat-button (click)="openDialogAddTask()">
             <mat-icon>add</mat-icon>
             <span>Add task</span>
           </button>
