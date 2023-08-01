@@ -17,9 +17,15 @@
 
       <div formArrayName="subtasks" class="mb-8" >
         <h2 class="text-lg">Subtask</h2>
-        <mat-form-field *ngFor="let task of subTasks.controls; let i=index" class="w-full">
-          <input id="index-{{i}}" matInput type="text" [formControlName]="i">
-        </mat-form-field>
+
+        <ng-container *ngFor="let task of subTasks.controls; let i=index" >
+          <div class="flex gap-x-4">
+            <mat-form-field class="w-full">
+              <input id="index-{{i}}" matInput type="text" [formControlName]="i">
+            </mat-form-field>
+            <mat-icon (click)="removeSubtask(i)" class="mt-4 cursor-pointer">clear</mat-icon>
+          </div>
+        </ng-container>
 
         <mat-card-actions>
           <button mat-raised-button color="primary" (click)="addSubtask()" class="w-full" >+ Add New Subtask</button>

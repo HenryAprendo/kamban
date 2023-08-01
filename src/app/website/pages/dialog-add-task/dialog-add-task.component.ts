@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 interface Status {
   value:string;
@@ -16,7 +17,7 @@ interface Status {
 @Component({
   selector: 'app-dialog-add-task',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule, MatIconModule],
   templateUrl: './dialog-add-task.component.html',
   styles: [
   ]
@@ -54,6 +55,10 @@ export class DialogAddTaskComponent {
 
   addSubtask(){
     this.subTasks.push(this.formBuilder.control(''));
+  }
+
+  removeSubtask(index:number){
+    this.subTasks.removeAt(index);
   }
 
 }
