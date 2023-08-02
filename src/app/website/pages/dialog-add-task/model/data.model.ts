@@ -1,5 +1,6 @@
+import { States } from '../../../../model/task.model';
 
 export interface Status {
-  value:string;
+  value:States;
   valueView:string;
 }

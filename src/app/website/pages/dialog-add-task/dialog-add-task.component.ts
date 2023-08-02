@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 import { STATUS } from './data';
-import { DialogDataCreateTask } from './model/create-task.model';
+import { States, TaskForm } from '../../../model/task.model';
 
 @Component({
   selector: 'app-dialog-add-task',
@@ -37,14 +37,14 @@ export class DialogAddTaskComponent {
   /**
    * Información de salida del formulario, que se envia al componente padre.
    */
-  task:DialogDataCreateTask|undefined;
+  task:TaskForm|undefined;
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddTaskComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogDataCreateTask
+    @Inject(MAT_DIALOG_DATA) public data: TaskForm
   ){
     this.buildForm();
-    this.taskForm.valueChanges.subscribe(data => this.task = data);
+    this.taskForm.valueChanges.subscribe((data:TaskForm) => this.task = data);
   }
 
   /**
@@ -54,10 +54,10 @@ export class DialogAddTaskComponent {
     this.taskForm = this.formBuilder.group({
       title: ['',[Validators.required, Validators.maxLength(30)]],
       description: ['',[Validators.required, Validators.maxLength(100)]],
-      subtasks: this.formBuilder.array([
+      tasks: this.formBuilder.array([
         this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(30)]),
       ]),
-      status: ['todo']
+      status: [States.Todo]
     });
   }
 
@@ -70,24 +70,23 @@ export class DialogAddTaskComponent {
     return this.taskForm.get('description');
   }
 
-  get subTasks(){
-    return this.taskForm.get('subtasks') as FormArray;
+  get tasks(){
+    return this.taskForm.get('tasks') as FormArray;
   }
 
   /**
-   * Agrega un control de formulario con validaciones en el control subtasks
+   * Agrega un control de formulario con validaciones en el control tasks
    */
   addSubtask(){
-    this.subTasks.push(this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(30)]));
+    this.tasks.push(this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(30)]));
   }
 
-
   /**
-   * Remove un control de formulario con validaciones en el control subtasks
-   * @param index posición del control en el array de controles subtasks
+   * Remove un control de formulario con validaciones en el control tasks
+   * @param index posición del control en el array de controles tasks
    */
   removeSubtask(index:number){
-    this.subTasks.removeAt(index);
+    this.tasks.removeAt(index);
   }
 
   /**

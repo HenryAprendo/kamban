@@ -54,7 +54,7 @@
           </button>
       </mat-toolbar>
 
-      <div *ngIf="actualBoard" class="grid grid-cols-1 sm:grid-cols-3" cdkDropListGroup>
+      <div *ngIf="actualBoard"  class="grid grid-cols-1 sm:grid-cols-3" cdkDropListGroup>
 
         <app-container-drap title="Todo">
           <app-card-list
@@ -76,8 +76,8 @@
             (eventCdkDragDrog)="drop($event)"
           />
         </app-container-drap>
-
       </div>
+
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

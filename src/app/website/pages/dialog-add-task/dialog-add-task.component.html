@@ -21,14 +21,14 @@
         <mat-error *ngIf="fieldDescription?.hasError('maxlength')" >Max. 100 characters</mat-error>
       </mat-form-field>
 
-      <div formArrayName="subtasks" class="mb-8" >
+      <div formArrayName="tasks" class="mb-8" >
         <h2 class="text-lg">Subtask</h2>
 
-        <ng-container *ngFor="let task of subTasks.controls; let i=index" >
+        <ng-container *ngFor="let task of tasks.controls; let i=index" >
           <div class="flex gap-x-4">
             <mat-form-field class="w-full">
               <input id="index-{{i}}" matInput type="text" [formControlName]="i">
-              <mat-error *ngIf="subTasks.controls[i].hasError('maxlength') || subTasks.controls[i].hasError('minlength')" >Min. 15 and Max. 30 characters</mat-error>
+              <mat-error *ngIf="tasks.controls[i].hasError('maxlength') || tasks.controls[i].hasError('minlength')" >Min. 15 and Max. 30 characters</mat-error>
             </mat-form-field>
             <button mat-icon-button (click)="removeSubtask(i)" class="mt-1 cursor-pointer flex items-center" >
               <mat-icon>clear</mat-icon>

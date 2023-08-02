@@ -13,7 +13,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropListGroup } fro
 
 import { BoardService } from '../../../services/board.service';
 import { Board } from '../../../model/board.model';
-import { Task, States } from '../../../model/task.model';
+import { Task, CreateTaskDTO, TaskForm, States, SubTasks } from '../../../model/task.model';
 import { Observable } from 'rxjs';
 import { DialogInputDataComponent } from '../dialog-input-data/dialog-input-data.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
@@ -191,9 +191,15 @@ export class DashboardComponent implements OnDestroy {
 
   private boardService = inject(BoardService);
 
-  actualBoard:Board | undefined = testBoard;
+  actualBoard: Board|undefined;
 
-  nextId = -1;
+  boardId:number = -1;
+
+  nextId = 0;
+
+  nextTaskId = 0;
+
+  nextSubtaskId = 0;
 
   listBoard: Observable<Board[]> = this.boardService.arrayBoards$;
 
@@ -201,6 +207,9 @@ export class DashboardComponent implements OnDestroy {
     this.mobileQuery = media.matchMedia('(min-width:1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+
+    this.boardService.actualBoard$
+      .subscribe(b => this.actualBoard = b);
   }
 
   /**
@@ -215,23 +224,44 @@ export class DashboardComponent implements OnDestroy {
       if(newTitle !== undefined && newTitle.length > 0){
         const newBoard = this.newBoard(newTitle)
         this.boardService.addBoard(newBoard);
-        this.actualBoard = newBoard;
+        this.boardId = newBoard.boardId;
       }
     })
   }
 
+  /**
+   * Abre el cuadro de dialogo que permite crear y agregar una tarea.
+   */
   openDialogAddTask() {
     const dialogRef = this.dialog.open(DialogAddTaskComponent,{
       data: { }
     });
 
-    dialogRef.afterClosed().subscribe(data => {
-      console.log(data);
-    })
+    dialogRef.afterClosed().subscribe((data:TaskForm) => {
+      console.log(data)
+
+      let subtasks: SubTasks[] = [];
+      data.tasks.forEach(task => subtasks.push({
+        id: this.nextSubtaskId++,
+        description: task,
+        done: false
+      }));
+
+      let newTask:Task = {
+        taskId: this.nextTaskId++,
+        title: data.title,
+        description: data.description,
+        subtasks: [...subtasks],
+        status: data.status
+      }
+
+      this.boardService.addTask(this.boardId,newTask);
+
+    });
+
   }
 
   /**
-   *
    * Actualiza cada contenedor cuando se han movido las tareas dentro del mismo array o cuando se han pasado a otro contenedor habilitado.
    * @param event tiene información acerca de como se han movido las tareas dentro de los contenedores.
    */
