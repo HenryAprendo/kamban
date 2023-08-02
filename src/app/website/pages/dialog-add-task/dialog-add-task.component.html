@@ -1,18 +1,24 @@
 
 <form [formGroup]="taskForm" class="w-96 max-h-[630px] overflow-auto" >
   <mat-card>
+
     <mat-card-header class="mb-8">
       <mat-card-title>Add new task</mat-card-title>
     </mat-card-header>
+
     <mat-card-content class="flex flex-col">
       <mat-form-field>
         <mat-label>Title</mat-label>
         <input type="text" matInput formControlName="title" />
+        <mat-error *ngIf="fieldTitle?.hasError('required')" >This field is required</mat-error>
+        <mat-error *ngIf="fieldTitle?.hasError('maxlength')" >Max. 40 characters</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description"></textarea>
+        <mat-error *ngIf="fieldDescription?.hasError('required')" >This field is required</mat-error>
+        <mat-error *ngIf="fieldDescription?.hasError('maxlength')" >Max. 100 characters</mat-error>
       </mat-form-field>
 
       <div formArrayName="subtasks" class="mb-8" >
@@ -22,13 +28,16 @@
           <div class="flex gap-x-4">
             <mat-form-field class="w-full">
               <input id="index-{{i}}" matInput type="text" [formControlName]="i">
+              <mat-error *ngIf="subTasks.controls[i].hasError('maxlength') || subTasks.controls[i].hasError('minlength')" >Min. 15 and Max. 30 characters</mat-error>
             </mat-form-field>
-            <mat-icon (click)="removeSubtask(i)" class="mt-4 cursor-pointer">clear</mat-icon>
+            <button mat-icon-button (click)="removeSubtask(i)" class="mt-1 cursor-pointer flex items-center" >
+              <mat-icon>clear</mat-icon>
+            </button>
           </div>
         </ng-container>
 
         <mat-card-actions>
-          <button mat-raised-button color="primary" (click)="addSubtask()" class="w-full" >+ Add New Subtask</button>
+          <button mat-raised-button type="button" color="primary" (click)="addSubtask()" class="w-full" >+ Add New Subtask</button>
         </mat-card-actions>
       </div>
 
@@ -40,10 +49,10 @@
       </mat-form-field>
 
       <mat-card-actions>
-        <button mat-raised-button color="primary" class="w-full" >Create task</button>
+        <button [disabled]="taskForm.invalid" type="button" [mat-dialog-close]="task" mat-raised-button color="primary" class="w-full" >Create task</button>
       </mat-card-actions>
+
     </mat-card-content>
   </mat-card>
 
 </form>
-

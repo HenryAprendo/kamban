@@ -225,13 +225,9 @@ export class DashboardComponent implements OnDestroy {
       data: { }
     });
 
-    // dialogRef.afterClosed().subscribe(newTitle => {
-    //   if(newTitle !== undefined && newTitle.length > 0){
-    //     const newBoard = this.newBoard(newTitle)
-    //     this.boardService.addBoard(newBoard);
-    //     this.actualBoard = newBoard;
-    //   }
-    // })
+    dialogRef.afterClosed().subscribe(data => {
+      console.log(data);
+    })
   }
 
   /**
