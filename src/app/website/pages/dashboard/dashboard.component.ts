@@ -255,7 +255,8 @@ export class DashboardComponent implements OnDestroy {
         status: data.status
       }
 
-      this.boardService.addTask(this.boardId,newTask);
+      // Solo se ejecutara el método en caso de que ya exista una panel creado
+      if(this.actualBoard) this.boardService.addTask(this.boardId,newTask);
 
     });
 

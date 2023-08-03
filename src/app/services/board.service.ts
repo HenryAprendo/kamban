@@ -14,7 +14,7 @@ export class BoardService {
   private arrayBoards = new BehaviorSubject(this.boards());
   arrayBoards$ = this.arrayBoards.asObservable();
 
-  actualBoard = new BehaviorSubject<Board|undefined>(undefined);
+  private actualBoard = new BehaviorSubject<Board|undefined>(undefined);
   actualBoard$ = this.actualBoard.asObservable();
 
   constructor() {}
@@ -28,13 +28,30 @@ export class BoardService {
   }
 
   addTask(boardId:number,task:Task){
+
     const data = this.boards();
     const index = data.findIndex(item => item.boardId === boardId);
 
     this.boards.mutate(value => {
-      value[index].listTodo.push(task);
+
+      switch(task.status){
+        case 'TODO': {
+          value[index].listTodo.push(task);
+          break;
+        }
+        case 'DOING': {
+          value[index].listDoing.push(task);
+          break;
+        }
+        case 'DONE': {
+          value[index].listDone.push(task);
+          break;
+        }
+      }
+
       this.notify(value[index]);
     });
+
   }
 
   private notify(board:Board){
@@ -43,6 +60,13 @@ export class BoardService {
   }
 
 }
+
+
+
+
+
+
+
 
 
 
