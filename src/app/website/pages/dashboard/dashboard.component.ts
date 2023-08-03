@@ -9,155 +9,14 @@ import { MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropListGroup } from '@angular/cdk/drag-drop';
 
 import { BoardService } from '../../../services/board.service';
 import { Board } from '../../../model/board.model';
-import { Task, CreateTaskDTO, TaskForm, States, SubTasks } from '../../../model/task.model';
+import { Task, TaskForm, SubTasks } from '../../../model/task.model';
 import { Observable } from 'rxjs';
 import { DialogInputDataComponent } from '../dialog-input-data/dialog-input-data.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
-
-import { ContainerDrapComponent } from '../../components/container-drap/container-drap.component';
-import { CardDragComponent } from '../../components/card-drag/card-drag.component';
-import { CardListComponent } from '../../components/card-list/card-list.component';
-
-const testBoard:Board = {
-  boardId: 0,
-  title: 'my-board',
-  listTodo: [
-    {
-      taskId: 0,
-      title: 'Pagar nomina uno',
-      description: 'Se debe obtnener las nominas y entregar a recursos humanos',
-      status: States.Todo,
-      subtasks: [{
-        id: 0,
-        description: 'buscar nomina',
-        done: true
-      },
-      {
-        id: 0,
-        description: 'imprimir nomina',
-        done: true
-      },
-      {
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      } ]
-    },
-    {
-      taskId: 1,
-      title: 'Pagar nomina dos',
-      description: 'Se debe obtnener las nominas y entregar a recursos humanos',
-      status: States.Todo,
-      subtasks: [{
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'imprimir nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      }]
-    }
-  ],
-  listDoing: [
-    {
-      taskId: 0,
-      title: 'Pagar nomina dos',
-      description: 'Se debe obtnener las nominas y entregar a recursos humanos',
-      status: States.Doing,
-      subtasks: [{
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'imprimir nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      }]
-    },
-    {
-      taskId: 1,
-      title: 'Pagar nomina tres',
-      description: 'Se debe obtnener las nominas y entregar a recursos humanos',
-      status: States.Doing,
-      subtasks: [{
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'imprimir nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      }]
-    }
-  ],
-  listDone: [
-    {
-      taskId: 0,
-      title: 'Pagar nomina cuatro',
-      description: 'Se debe obtnener las nominas y entregar a recursos humanos',
-      status: States.Done,
-      subtasks: [{
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'imprimir nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      }]
-    },
-    {
-      taskId: 1,
-      title: 'Pagar nomina cinco',
-      description: 'Se debe obtnener las nominas y entregar a recursos humanos',
-      status: States.Done,
-      subtasks: [{
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'imprimir nomina',
-        done: false
-      },
-      {
-        id: 0,
-        description: 'buscar nomina',
-        done: false
-      }]
-    }
-  ]
-}
+import { DragAndDrogComponent } from '../../components/drag-and-drog/drag-and-drog.component';
 
 
 @Component({
@@ -172,10 +31,7 @@ const testBoard:Board = {
     MatIconModule,
     MatListModule,
     MatDialogModule,
-    CdkDropListGroup,
-    ContainerDrapComponent,
-    CardDragComponent,
-    CardListComponent
+    DragAndDrogComponent
   ],
   templateUrl: './dashboard.component.html',
   styles: [
@@ -187,6 +43,7 @@ export class DashboardComponent implements OnDestroy {
 
   mobileQuery: MediaQueryList;
 
+  // Manejo del breakpoint
   private _mobileQueryListener: () => void;
 
   private boardService = inject(BoardService);
@@ -260,28 +117,6 @@ export class DashboardComponent implements OnDestroy {
 
     });
 
-  }
-
-  /**
-   * Actualiza cada contenedor cuando se han movido las tareas dentro del mismo array o cuando se han pasado a otro contenedor habilitado.
-   * @param event tiene información acerca de como se han movido las tareas dentro de los contenedores.
-   */
-  drop(event:CdkDragDrop<Task[]>){
-    if(event.previousContainer === event.container){
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-    else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
   }
 
   private newBoard(title:string): Board {

@@ -1,0 +1,59 @@
+
+<div class="grid grid-cols-1 sm:grid-cols-3" cdkDropListGroup >
+
+  <!-- Task Todo -->
+  <div class="p-3 w-full h-full">
+    <h2>Todo</h2>
+    <div
+      class="w-full h-full"
+      cdkDropList
+      [cdkDropListData]="board.listTodo"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <mat-card cdkDrag *ngFor="let item of board.listTodo"  class="cursor-pointer mb-3">
+        <mat-card-header>
+          <mat-card-title>{{item.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Task Doing -->
+  <div class="p-3 w-full h-full">
+    <h2>Doing</h2>
+    <div
+      class="w-full h-full"
+      cdkDropList
+      [cdkDropListData]="board.listDoing"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <mat-card cdkDrag *ngFor="let item of board.listDoing"  class="cursor-pointer mb-3">
+        <mat-card-header>
+          <mat-card-title>{{item.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Task Done -->
+  <div class="p-3 w-full h-full">
+    <h2>Done</h2>
+    <div
+      class="w-full h-full"
+      cdkDropList
+      [cdkDropListData]="board.listDone"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <mat-card cdkDrag *ngFor="let item of board.listDone"  class="cursor-pointer mb-3">
+        <mat-card-header>
+          <mat-card-title>{{item.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+</div>
+

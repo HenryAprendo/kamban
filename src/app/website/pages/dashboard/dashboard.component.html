@@ -54,29 +54,9 @@
           </button>
       </mat-toolbar>
 
-      <div *ngIf="actualBoard"  class="grid grid-cols-1 sm:grid-cols-3" cdkDropListGroup>
-
-        <app-container-drap title="Todo">
-          <app-card-list
-            [taskList]="actualBoard.listTodo"
-            (eventCdkDragDrog)="drop($event)"
-          />
-        </app-container-drap>
-
-        <app-container-drap title="Doing">
-          <app-card-list
-            [taskList]="actualBoard.listDoing"
-            (eventCdkDragDrog)="drop($event)"
-          />
-        </app-container-drap>
-
-        <app-container-drap title="Done">
-          <app-card-list
-            [taskList]="actualBoard.listDone"
-            (eventCdkDragDrog)="drop($event)"
-          />
-        </app-container-drap>
-      </div>
+      <ng-container *ngIf="actualBoard">
+        <app-drag-and-drog [board]="actualBoard" />
+      </ng-container>
 
     </mat-sidenav-content>
   </mat-sidenav-container>
