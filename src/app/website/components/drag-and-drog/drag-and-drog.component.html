@@ -5,12 +5,12 @@
   <div class="p-3 w-full h-full">
     <h2>Todo</h2>
     <div
-      class="w-full h-full"
+      class="w-full h-full list-box-item"
       cdkDropList
       [cdkDropListData]="board.listTodo"
       (cdkDropListDropped)="drop($event)"
     >
-      <mat-card cdkDrag *ngFor="let item of board.listTodo"  class="cursor-pointer mb-3">
+      <mat-card cdkDrag *ngFor="let item of board.listTodo"  class="box-item cursor-move mb-3">
         <mat-card-header>
           <mat-card-title>{{item.title}}</mat-card-title>
         </mat-card-header>
@@ -28,7 +28,7 @@
       [cdkDropListData]="board.listDoing"
       (cdkDropListDropped)="drop($event)"
     >
-      <mat-card cdkDrag *ngFor="let item of board.listDoing"  class="cursor-pointer mb-3">
+      <mat-card cdkDrag *ngFor="let item of board.listDoing"  class="cursor-move mb-3">
         <mat-card-header>
           <mat-card-title>{{item.title}}</mat-card-title>
         </mat-card-header>
@@ -46,7 +46,7 @@
       [cdkDropListData]="board.listDone"
       (cdkDropListDropped)="drop($event)"
     >
-      <mat-card cdkDrag *ngFor="let item of board.listDone"  class="cursor-pointer mb-3">
+      <mat-card cdkDrag *ngFor="let item of board.listDone"  class="cursor-move mb-3">
         <mat-card-header>
           <mat-card-title>{{item.title}}</mat-card-title>
         </mat-card-header>
