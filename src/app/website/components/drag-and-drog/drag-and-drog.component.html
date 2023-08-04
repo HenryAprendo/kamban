@@ -1,7 +1,7 @@
 
 <div class="grid grid-cols-1 sm:grid-cols-3" cdkDropListGroup >
-  <app-drop-list [data]="board.listTodo"  (evCdkDropListDroped)="drop($event)" title="Todo" />
-  <app-drop-list [data]="board.listDoing" (evCdkDropListDroped)="drop($event)" title="Doing" />
-  <app-drop-list [data]="board.listDone"  (evCdkDropListDroped)="drop($event)" title="Done" />
+  <app-drop-list [data]="board.listTodo"  (evCdkDropListDroped)="drop($event)" title="Todo" color="blue" />
+  <app-drop-list [data]="board.listDoing" (evCdkDropListDroped)="drop($event)" title="Doing" color="purple" />
+  <app-drop-list [data]="board.listDone"  (evCdkDropListDroped)="drop($event)" title="Done" color="green" />
 </div>
 

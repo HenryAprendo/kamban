@@ -17,6 +17,8 @@ export class DropListComponent {
 
   @Input({required:true}) title = '';
 
+  @Input() color: 'blue'|'purple'|'green' = 'blue';
+
   @Output() evCdkDropListDroped = new EventEmitter();
 
   drop(event:CdkDragDrop<Task[]>){
@@ -30,3 +32,16 @@ export class DropListComponent {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
