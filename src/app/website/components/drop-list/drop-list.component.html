@@ -1,0 +1,16 @@
+<div class="p-3 w-full h-full">
+  <h2>{{title}}</h2>
+  <div
+    class="w-full h-full list-box-item"
+    cdkDropList
+    [cdkDropListData]="data"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <mat-card cdkDrag *ngFor="let item of data"  class="box-item cursor-move mb-3">
+      <mat-card-header>
+        <mat-card-title>{{item.title}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
+    </mat-card>
+  </div>
+</div>

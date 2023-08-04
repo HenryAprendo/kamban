@@ -1,16 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { MatCardModule } from '@angular/material/card';
-import { CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropListGroup } from '@angular/cdk/drag-drop';
-
-import { SubTasks, Task } from '../../../model/task.model';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { Task } from '../../../model/task.model';
 import { Board } from '../../../model/board.model';
+import { DropListComponent } from '../drop-list/drop-list.component';
 
 @Component({
   selector: 'app-drag-and-drog',
   standalone: true,
-  imports: [CommonModule, CdkDrag, CdkDropList, CdkDropListGroup, MatCardModule],
+  imports: [CommonModule, CdkDropListGroup, DropListComponent],
   templateUrl: './drag-and-drog.component.html',
   styleUrls: ['./drag-and-drog.component.scss']
 })
@@ -39,11 +37,5 @@ export class DragAndDrogComponent {
       );
     }
   };
-
-  numberSubstasksDone(subtasks:SubTasks[]){
-    const taskDone = subtasks.filter(item => item.done === true);
-    const result = `${taskDone.length} of ${subtasks.length} substasks`;
-    return result;
-  }
 
 }
