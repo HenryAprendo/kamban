@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnDestroy, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy, inject, signal, WritableSignal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -12,7 +12,7 @@ import { MatDialog, MatDialogModule} from '@angular/material/dialog';
 
 import { BoardService } from '../../../services/board.service';
 import { Board } from '../../../model/board.model';
-import { Task, TaskForm, SubTasks } from '../../../model/task.model';
+import { Task, TaskForm, SubTasks, States } from '../../../model/task.model';
 import { Observable } from 'rxjs';
 import { DialogInputDataComponent } from '../dialog-input-data/dialog-input-data.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
@@ -66,7 +66,11 @@ export class DashboardComponent implements OnDestroy {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
     this.boardService.actualBoard$
-      .subscribe(b => this.actualBoard = b);
+      .subscribe(b => {
+        if(b){
+          this.actualBoard = b
+        }
+      });
   }
 
   /**
@@ -95,25 +99,26 @@ export class DashboardComponent implements OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((data:TaskForm) => {
-      console.log(data)
 
       let subtasks: SubTasks[] = [];
-      data.tasks.forEach(task => subtasks.push({
-        id: this.nextSubtaskId++,
-        description: task,
-        done: false
-      }));
 
-      let newTask:Task = {
-        taskId: this.nextTaskId++,
-        title: data.title,
-        description: data.description,
-        subtasks: [...subtasks],
-        status: data.status
+      if(this.actualBoard && data ) {
+        data.tasks.forEach(task => subtasks.push({
+          id: this.nextSubtaskId++,
+          description: task,
+          done: false
+        }));
+
+        let newTask:Task = {
+          taskId: this.nextTaskId++,
+          title: data.title,
+          description: data.description,
+          subtasks: [...subtasks],
+          status: data.status
+        }
+
+        this.boardService.addTask(this.boardId,newTask);
       }
-
-      // Solo se ejecutara el método en caso de que ya exista una panel creado
-      if(this.actualBoard) this.boardService.addTask(this.boardId,newTask);
 
     });
 
@@ -127,6 +132,30 @@ export class DashboardComponent implements OnDestroy {
       listDoing: [],
       listDone: []
     }
+  }
+
+  updateBoardActual(){
+
+    let dataTodo:Task[] = [];
+    let dataDoing:Task[] = [];
+    let dataDone:Task[] = [];
+
+    if(this.actualBoard){
+
+      dataTodo = this.actualBoard.listTodo.map(item => item.status !== States.Todo ? { ...item, status: States.Todo } : item );
+      dataDoing = this.actualBoard.listDoing.map(item => item.status !== States.Doing ? { ...item, status: States.Doing } : item);
+      dataDone = this.actualBoard.listDone.map(item => item.status !== States.Done ? { ...item, status: States.Done } : item);
+
+      let boardUpdate:Board = {
+        ...this.actualBoard,
+        listTodo: dataTodo,
+        listDoing: dataDoing,
+        listDone: dataDone
+      }
+
+      this.boardService.updateTaskOfBoard(this.boardId,boardUpdate);
+    }
+
   }
 
   ngOnDestroy(): void {

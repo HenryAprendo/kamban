@@ -55,7 +55,7 @@
       </mat-toolbar>
 
       <ng-container *ngIf="actualBoard">
-        <app-drag-and-drog [board]="actualBoard" />
+        <app-drag-and-drog [board]="actualBoard" (moveItems)="updateBoardActual()" />
       </ng-container>
 
     </mat-sidenav-content>
