@@ -40,6 +40,30 @@ import { DragAndDrogComponent } from '../../components/drag-and-drog/drag-and-dr
 })
 export class DashboardComponent implements OnDestroy {
 
+  task:Task = {
+    taskId: 0,
+    title: 'Imprimir documentos y explicar en detalle los conceptos necesarios para lograr los objetivos',
+    description: 'Ir registro por registro y leer y revisar cada documento impreso hasta obtener la conclusion de como esta la organizacion en sus procesos determinado asi las causas de la baja produccion',
+    subtasks: [
+      {
+        id: 0,
+        description: 'Analizar documentos',
+        done: false
+      },
+      {
+        id: 1,
+        description: 'Tomar nota de todos los requisitos encotrados',
+        done: true
+      },
+      {
+        id: 2,
+        description: 'Colocar en folder los papeles y almacenar en cajas',
+        done: false
+      },
+    ],
+    status: States.Doing
+  }
+
   private defaultTitle = 'new title';
 
   mobileQuery: MediaQueryList;
@@ -128,7 +152,7 @@ export class DashboardComponent implements OnDestroy {
 
   openDialogViewTaskAndUpdateProgress(){
     const dialogRef = this.dialog.open(DialogViewTaskAndUpdateProgressComponent, {
-      data: { }
+      data: this.task,
     });
 
     dialogRef.afterClosed().subscribe(console.log);

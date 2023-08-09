@@ -1,5 +1,5 @@
-import { Status } from './model/data.model';
-import { States } from '../../../model/task.model';
+import { Status } from '../model/data.model';
+import { States } from '../model/task.model';
 
 export const STATUS: Array<Status> = [
   {value: States.Todo, valueView: 'Todo'},

@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
-import { STATUS } from './data';
+import { STATUS } from '../../../data/data';
 import { States, TaskForm } from '../../../model/task.model';
 
 @Component({

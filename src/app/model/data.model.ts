@@ -1,4 +1,4 @@
-import { States } from '../../../../model/task.model';
+import { States } from './task.model';
 
 export interface Status {
   value:States;
