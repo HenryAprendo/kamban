@@ -16,6 +16,7 @@ import { Task, TaskForm, SubTasks, States } from '../../../model/task.model';
 import { Observable } from 'rxjs';
 import { DialogInputDataComponent } from '../dialog-input-data/dialog-input-data.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
+import { DialogViewTaskAndUpdateProgressComponent } from '../dialog-view-task-and-update-progress/dialog-view-task-and-update-progress.component';
 import { DragAndDrogComponent } from '../../components/drag-and-drog/drag-and-drog.component';
 
 
@@ -123,6 +124,17 @@ export class DashboardComponent implements OnDestroy {
     });
 
   }
+
+
+  openDialogViewTaskAndUpdateProgress(){
+    const dialogRef = this.dialog.open(DialogViewTaskAndUpdateProgressComponent, {
+      data: { }
+    });
+
+    dialogRef.afterClosed().subscribe(console.log);
+  }
+
+
 
   private newBoard(title:string): Board {
     return {

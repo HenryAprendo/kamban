@@ -58,6 +58,8 @@
         <app-drag-and-drog [board]="actualBoard" (moveItems)="updateBoardActual()" />
       </ng-container>
 
+      <button mat-raised-button (click)="openDialogViewTaskAndUpdateProgress()" >Open view task</button>
+
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
