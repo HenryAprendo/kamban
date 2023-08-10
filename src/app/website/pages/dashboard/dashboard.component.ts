@@ -48,12 +48,12 @@ export class DashboardComponent implements OnDestroy {
       {
         id: 0,
         description: 'Analizar documentos',
-        done: false
+        done: true
       },
       {
         id: 1,
         description: 'Tomar nota de todos los requisitos encotrados',
-        done: true
+        done: false
       },
       {
         id: 2,

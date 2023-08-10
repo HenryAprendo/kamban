@@ -33,6 +33,8 @@ export class DialogViewTaskAndUpdateProgressComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Agregando controles dinamicamente para checkbox, con su valor de estado boleano.
+    this.data.subtasks.forEach(task => this.addControl(task.done));
     this.editForm.get('status')?.setValue(this.data.status);
   }
 
@@ -48,7 +50,8 @@ export class DialogViewTaskAndUpdateProgressComponent implements OnInit {
   }
 
   addControl(value:boolean){
-    this.subtasks.push(this.formBuilder.control(value))
+    this.subtasks.push(this.formBuilder.control(value));
+    console.log('Ejecutando el metodo')
   }
 
   closeDialog(){
