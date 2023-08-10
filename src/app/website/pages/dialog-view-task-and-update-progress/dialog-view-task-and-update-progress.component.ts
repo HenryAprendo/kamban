@@ -1,14 +1,19 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 
-import { Task, States } from '../../../model/task.model';
+import { Task, States, SubTasks } from '../../../model/task.model';
 import { STATUS } from '../../../data/data';
+
+interface UpdateTask {
+  status: States;
+  subtasks: boolean[];
+}
 
 @Component({
   selector: 'app-dialog-view-task-and-update-progress',
@@ -17,9 +22,9 @@ import { STATUS } from '../../../data/data';
   templateUrl: './dialog-view-task-and-update-progress.component.html',
   styleUrls: ['./dialog-view-task-and-update-progress.component.scss']
 })
-export class DialogViewTaskAndUpdateProgressComponent implements OnInit {
+export class DialogViewTaskAndUpdateProgressComponent {
 
-  formBuilder = inject(FormBuilder);
+  private formBuilder = inject(FormBuilder);
 
   editForm!:FormGroup;
 
@@ -30,12 +35,28 @@ export class DialogViewTaskAndUpdateProgressComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Task
   ){
     this.buildForm();
-  }
-
-  ngOnInit(): void {
-    // Agregando controles dinamicamente para checkbox, con su valor de estado boleano.
     this.data.subtasks.forEach(task => this.addControl(task.done));
     this.editForm.get('status')?.setValue(this.data.status);
+
+    this.editForm.valueChanges.subscribe((result:UpdateTask) => {
+
+      let mapa = new Map<number,SubTasks>();
+
+      this.data.subtasks.forEach((item,i) => mapa.set(i,{...item}));
+
+      let updateSubtasks = result.subtasks.map((value,i) => {
+        let subtask = mapa.get(i)!;
+        subtask.done = value;
+        return subtask;
+      })
+
+      let updateTask:Task = {
+        ...this.data,
+        status: result.status,
+        subtasks: [...updateSubtasks]
+      }
+
+    });
   }
 
   private buildForm() {
@@ -51,7 +72,6 @@ export class DialogViewTaskAndUpdateProgressComponent implements OnInit {
 
   addControl(value:boolean){
     this.subtasks.push(this.formBuilder.control(value));
-    console.log('Ejecutando el metodo')
   }
 
   closeDialog(){
