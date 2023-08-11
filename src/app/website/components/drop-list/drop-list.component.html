@@ -9,11 +9,8 @@
     [cdkDropListData]="data"
     (cdkDropListDropped)="drop($event)"
   >
-    <mat-card cdkDrag *ngFor="let item of data"  class="box-item cursor-move mb-3">
-      <mat-card-header>
-        <mat-card-title>{{item.title}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>{{numberSubstasksDone(item.subtasks)}}</mat-card-content>
-    </mat-card>
+    <ng-container *ngFor="let task of data">
+      <app-drag-item [item]="task" />
+    </ng-container>
   </div>
 </div>

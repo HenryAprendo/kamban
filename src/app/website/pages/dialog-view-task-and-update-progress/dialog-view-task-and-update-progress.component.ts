@@ -1,4 +1,4 @@
-import { Component, Inject, Input, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from '@angular/forms';
@@ -7,13 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 
-import { Task, States, SubTasks } from '../../../model/task.model';
+import { Task, States, SubTasks, UpdateTask } from '../../../model/task.model';
 import { STATUS } from '../../../data/data';
-
-interface UpdateTask {
-  status: States;
-  subtasks: boolean[];
-}
+import { numberSubstasksDone } from '../../../util/helpers/helpers';
 
 @Component({
   selector: 'app-dialog-view-task-and-update-progress',
@@ -30,6 +26,8 @@ export class DialogViewTaskAndUpdateProgressComponent {
 
   status = STATUS;
 
+  completedSubtasks:string;
+
   constructor(
     public dialogRef: MatDialogRef<DialogViewTaskAndUpdateProgressComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Task
@@ -38,10 +36,11 @@ export class DialogViewTaskAndUpdateProgressComponent {
     this.data.subtasks.forEach(task => this.addControl(task.done));
     this.editForm.get('status')?.setValue(this.data.status);
 
+    this.completedSubtasks = numberSubstasksDone(this.data.subtasks);
+
     this.editForm.valueChanges.subscribe((result:UpdateTask) => {
 
       let mapa = new Map<number,SubTasks>();
-
       this.data.subtasks.forEach((item,i) => mapa.set(i,{...item}));
 
       let updateSubtasks = result.subtasks.map((value,i) => {
@@ -55,6 +54,8 @@ export class DialogViewTaskAndUpdateProgressComponent {
         status: result.status,
         subtasks: [...updateSubtasks]
       }
+
+      this.completedSubtasks = numberSubstasksDone([...updateSubtasks]);
 
     });
   }

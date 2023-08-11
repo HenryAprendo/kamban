@@ -8,6 +8,8 @@
 
       <div formGroupName="subtasks">
         <!-- Asociando cada tarea con los controles creados en el ngOnInit, por medio del index -->
+        <p mat-dialog-title>{{completedSubtasks}}</p>
+
         <div *ngFor="let task of data.subtasks; let i = index">
           <mat-checkbox [formControlName]="i" >{{task.description}}</mat-checkbox>
         </div>

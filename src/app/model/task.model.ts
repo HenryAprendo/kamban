@@ -24,3 +24,14 @@ export interface CreateTaskDTO extends Omit<Task,'taskId'>{};
 export interface TaskForm extends Omit<Task,'taskId'|'subtasks'>{
   tasks:string[];
 }
+
+
+export interface UpdateTask {
+  status: States;
+  subtasks: boolean[];
+}
+
+
+
+
+
