@@ -1,7 +1,7 @@
 
 <div class="w-[450px] max-h-[630px] overflow-auto" >
-  <h1 mat-dialog-title >{{data.title}}</h1>
-  <p mat-dialog-content >{{data.description}}</p>
+  <h1 mat-dialog-title >{{data.task.title}}</h1>
+  <p mat-dialog-content >{{data.task.description}}</p>
 
   <div mat-dialog-content>
     <form [formGroup]="editForm" >
@@ -10,7 +10,7 @@
         <!-- Asociando cada tarea con los controles creados en el ngOnInit, por medio del index -->
         <p mat-dialog-title>{{completedSubtasks}}</p>
 
-        <div *ngFor="let task of data.subtasks; let i = index">
+        <div *ngFor="let task of data.task.subtasks; let i = index">
           <mat-checkbox [formControlName]="i" >{{task.description}}</mat-checkbox>
         </div>
       </div>

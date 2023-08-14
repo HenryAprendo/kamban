@@ -105,7 +105,6 @@ export class DashboardComponent implements OnDestroy {
     //Se ejecuta cuando se hace click en una tarea de la board actual
     this.taskService.getTaskClicked()
       .subscribe(data => {
-        console.log(data);
         this.openDialogViewTaskAndUpdateProgress(data);
       });
 
@@ -167,7 +166,10 @@ export class DashboardComponent implements OnDestroy {
    */
   openDialogViewTaskAndUpdateProgress(task:Task){
     const dialogRef = this.dialog.open(DialogViewTaskAndUpdateProgressComponent, {
-      data: task
+      data: {
+        task: task,
+        boardId: this.boardId
+      }
     });
 
     dialogRef.afterClosed().subscribe();
@@ -213,7 +215,7 @@ export class DashboardComponent implements OnDestroy {
         listDone: dataDone
       }
 
-      this.boardService.updateTaskOfBoard(this.boardId,boardUpdate);
+      this.boardService.updateBoard(this.boardId,boardUpdate);
     }
 
   }

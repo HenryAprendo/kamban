@@ -11,6 +11,11 @@ import { Task, States, SubTasks, UpdateTask } from '../../../model/task.model';
 import { STATUS } from '../../../data/data';
 import { numberSubstasksDone } from '../../../util/helpers/helpers';
 
+import { UpdateBoard } from '../../../model/board.model';
+import { BoardService } from '../../../services/board.service';
+
+
+
 @Component({
   selector: 'app-dialog-view-task-and-update-progress',
   standalone: true,
@@ -19,6 +24,8 @@ import { numberSubstasksDone } from '../../../util/helpers/helpers';
   styleUrls: ['./dialog-view-task-and-update-progress.component.scss']
 })
 export class DialogViewTaskAndUpdateProgressComponent {
+
+  private boardService = inject(BoardService);
 
   private formBuilder = inject(FormBuilder);
 
@@ -30,35 +37,38 @@ export class DialogViewTaskAndUpdateProgressComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogViewTaskAndUpdateProgressComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Task
+    @Inject(MAT_DIALOG_DATA) public data: UpdateBoard
   ){
-
     this.buildForm();
-    this.data.subtasks.forEach(task => this.addControl(task.done));
-    this.editForm.get('status')?.setValue(this.data.status);
+    this.data.task.subtasks.forEach(task => this.addControl(task.done));
+    this.editForm.get('status')?.setValue(this.data.task.status);
 
-    this.completedSubtasks = numberSubstasksDone(this.data.subtasks);
+    this.completedSubtasks = numberSubstasksDone(this.data.task.subtasks);
 
     this.editForm.valueChanges.subscribe((result:UpdateTask) => {
-
-      let mapa = new Map<number,SubTasks>();
-      this.data.subtasks.forEach((item,i) => mapa.set(i,{...item}));
-
-      let updateSubtasks = result.subtasks.map((value,i) => {
-        let subtask = mapa.get(i)!;
-        subtask.done = value;
-        return subtask;
-      })
-
-      let updateTask:Task = {
-        ...this.data,
-        status: result.status,
-        subtasks: [...updateSubtasks]
-      }
-
-      this.completedSubtasks = numberSubstasksDone([...updateSubtasks]);
-
+      this.updateTask({...this.data},result);
     });
+  }
+
+  private updateTask(data:UpdateBoard, dta:UpdateTask){
+
+    let mapa = new Map<number,SubTasks>();
+    data.task.subtasks.forEach((item,i) => mapa.set(i,{...item}));
+
+    let updateSubtasks = dta.subtasks.map((value,i) => {
+      let subtask = mapa.get(i)!;
+      subtask.done = value;
+      return subtask;
+    })
+
+    let updateTask:Task = {
+      ...data.task,
+      status: dta.status,
+      subtasks: [...updateSubtasks]
+    }
+
+    this.completedSubtasks = numberSubstasksDone([...updateSubtasks]);
+    this.boardService.updateTaskOfBoard(data.boardId,updateTask);
   }
 
   private buildForm() {

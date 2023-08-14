@@ -9,3 +9,8 @@ export interface Board {
 }
 
 export interface CreateBoardDTO extends Omit<Board, 'boardId'> { };
+
+export interface UpdateBoard {
+  task:Task;
+  boardId:number;
+}

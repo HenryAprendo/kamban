@@ -70,13 +70,38 @@ export class BoardService {
    * @param board objeto del tipo Board con el nuevo contenido que ha sido modificado y que necesita ser actualizado en la lista de board, para que coincida con lo que se muestra en pantalla.
    *
   */
-  updateTaskOfBoard(boardId:number, board:Board){
+  updateBoard(boardId:number, board:Board){
     const index = this.getPositionIndex(boardId);
     this.boards.mutate(value => {
       value[index] = board;
     });
 
     this.notify(board);
+  }
+
+  updateTaskOfBoard(boardId:number,task:Task){
+    const index = this.getPositionIndex(boardId);
+    const board = this.boards()[index];
+
+    switch(task.status){
+      case 'TODO': {
+        let taskPositionIndex = board.listTodo.findIndex(item => item.taskId === task.taskId);
+        board.listTodo[taskPositionIndex] = {...task};
+        break;
+      }
+      case 'DOING': {
+        let taskPositionIndex = board.listDoing.findIndex(item => item.taskId === task.taskId);
+        board.listDoing[taskPositionIndex] = {...task};
+        break;
+      }
+      case 'DONE': {
+        let taskPositionIndex = board.listDone.findIndex(item => item.taskId === task.taskId);
+        board.listDone[taskPositionIndex] = {...task};
+        break;
+      }
+    }
+
+    this.updateBoard(boardId,board);
   }
 
   /**
