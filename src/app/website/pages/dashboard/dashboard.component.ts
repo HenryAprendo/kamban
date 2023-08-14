@@ -19,6 +19,8 @@ import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.compo
 import { DialogViewTaskAndUpdateProgressComponent } from '../dialog-view-task-and-update-progress/dialog-view-task-and-update-progress.component';
 import { DragAndDrogComponent } from '../../components/drag-and-drog/drag-and-drog.component';
 
+import { TaskService } from '../../../services/task.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -53,7 +55,7 @@ export class DashboardComponent implements OnDestroy {
       {
         id: 1,
         description: 'Tomar nota de todos los requisitos encotrados',
-        done: false
+        done: true
       },
       {
         id: 2,
@@ -73,6 +75,8 @@ export class DashboardComponent implements OnDestroy {
 
   private boardService = inject(BoardService);
 
+  private taskService = inject(TaskService);
+
   actualBoard: Board|undefined;
 
   boardId:number = -1;
@@ -90,12 +94,21 @@ export class DashboardComponent implements OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
+    // Mantener la board actualizada
     this.boardService.actualBoard$
       .subscribe(b => {
         if(b){
           this.actualBoard = b
         }
       });
+
+    //Se ejecuta cuando se hace click en una tarea de la board actual
+    this.taskService.getTaskClicked()
+      .subscribe(data => {
+        console.log(data);
+        this.openDialogViewTaskAndUpdateProgress(data);
+      });
+
   }
 
   /**
@@ -149,17 +162,24 @@ export class DashboardComponent implements OnDestroy {
 
   }
 
-
-  openDialogViewTaskAndUpdateProgress(){
+  /**
+   * Abre el cuadro de dialogo que permite ver en detalle una tarea y actualizar el progreso que ha tenido.
+   */
+  openDialogViewTaskAndUpdateProgress(task:Task){
     const dialogRef = this.dialog.open(DialogViewTaskAndUpdateProgressComponent, {
-      data: this.task,
+      data: task
     });
 
-    dialogRef.afterClosed().subscribe(console.log);
+    dialogRef.afterClosed().subscribe();
   }
 
 
-
+  /**
+   * El método permite crear una nueva board.
+   * Note: Esto debe ser creado en backend en futuras versiones.
+   * @param title titulo de la board
+   * @returns
+   */
   private newBoard(title:string): Board {
     return {
       boardId: this.nextId++,
@@ -170,6 +190,10 @@ export class DashboardComponent implements OnDestroy {
     }
   }
 
+  /**
+   * Actualiza el estado de cada tarea en cada una de las listas, cuando son movidas de un contenedor a otro.
+   * Esto ocurre cuando es lanzado el evento personalizado "(moveItems)"
+   */
   updateBoardActual(){
 
     let dataTodo:Task[] = [];

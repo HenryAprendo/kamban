@@ -1,7 +1,9 @@
 
-<mat-card  cdkDrag class="box-item cursor-move mb-3">
-  <mat-card-header>
-    <mat-card-title>{{task.title}}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>{{completedSubtasks()}}</mat-card-content>
-</mat-card>
+<div (click)="taskService.emitTaskClicked(task)">
+  <mat-card cdkDrag class="box-item cursor-move mb-3" >
+    <mat-card-header>
+      <mat-card-title>{{task.title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>{{completedSubtasks()}}</mat-card-content>
+  </mat-card>
+</div>

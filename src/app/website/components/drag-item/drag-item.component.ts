@@ -1,9 +1,10 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { Task } from '../../../model/task.model';
 import { numberSubstasksDone, getDefaultTask } from '../../../util/helpers/helpers';
+import { TaskService } from '../../../services/task.service';
 
 @Component({
   selector: 'app-drag-item',
@@ -24,4 +25,8 @@ export class DragItemComponent {
     this._task.set(value);
   }
 
+  taskService = inject(TaskService);
+
 }
+
+

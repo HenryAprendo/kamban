@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Task } from '../../../model/task.model';
 import { Board } from '../../../model/board.model';
+import { getDefaultBoard } from '../../../util/helpers/helpers';
 import { DropListComponent } from '../drop-list/drop-list.component';
 
 @Component({
@@ -14,7 +15,13 @@ import { DropListComponent } from '../drop-list/drop-list.component';
 })
 export class DragAndDrogComponent {
 
-  @Input({required:true}) board!: Board;
+  private _board = signal(getDefaultBoard())
+
+  @Input({required:true})
+  get board() { return this._board()}
+  set board(board:Board){
+    this._board.set(board);
+  }
 
   @Output() moveItems = new EventEmitter();
 

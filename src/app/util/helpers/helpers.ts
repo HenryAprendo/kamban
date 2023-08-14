@@ -1,3 +1,4 @@
+import { Board } from "../../model/board.model";
 import { States, SubTasks, Task } from "../../model/task.model";
 
 export const numberSubstasksDone = (subtasks:SubTasks[]) => {
@@ -16,4 +17,15 @@ export const getDefaultTask = () => {
   }
 
   return task;
+}
+
+export const getDefaultBoard = () => {
+  let board:Board = {
+    boardId: 0,
+    title: "",
+    listTodo: [],
+    listDoing: [],
+    listDone: []
+  }
+  return board;
 }

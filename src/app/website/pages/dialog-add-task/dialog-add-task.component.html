@@ -11,14 +11,14 @@
         <mat-label>Title</mat-label>
         <input type="text" matInput formControlName="title" />
         <mat-error *ngIf="fieldTitle?.hasError('required')" >This field is required</mat-error>
-        <mat-error *ngIf="fieldTitle?.hasError('maxlength')" >Max. 40 characters</mat-error>
+        <mat-error *ngIf="fieldTitle?.hasError('maxlength')" >Max. 100 characters</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description"></textarea>
         <mat-error *ngIf="fieldDescription?.hasError('required')" >This field is required</mat-error>
-        <mat-error *ngIf="fieldDescription?.hasError('maxlength')" >Max. 100 characters</mat-error>
+        <mat-error *ngIf="fieldDescription?.hasError('maxlength')" >Max. 300 characters</mat-error>
       </mat-form-field>
 
       <div formArrayName="tasks" class="mb-8" >

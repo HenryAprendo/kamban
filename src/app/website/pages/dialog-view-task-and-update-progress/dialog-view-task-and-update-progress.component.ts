@@ -32,6 +32,7 @@ export class DialogViewTaskAndUpdateProgressComponent {
     public dialogRef: MatDialogRef<DialogViewTaskAndUpdateProgressComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Task
   ){
+
     this.buildForm();
     this.data.subtasks.forEach(task => this.addControl(task.done));
     this.editForm.get('status')?.setValue(this.data.status);

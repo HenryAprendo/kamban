@@ -52,10 +52,10 @@ export class DialogAddTaskComponent {
    */
   private buildForm(){
     this.taskForm = this.formBuilder.group({
-      title: ['',[Validators.required, Validators.maxLength(30)]],
-      description: ['',[Validators.required, Validators.maxLength(100)]],
+      title: ['',[Validators.required, Validators.maxLength(100)]],
+      description: ['',[Validators.required, Validators.maxLength(300)]],
       tasks: this.formBuilder.array([
-        this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(30)]),
+        this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(40)]),
       ]),
       status: [States.Todo]
     });
@@ -78,7 +78,7 @@ export class DialogAddTaskComponent {
    * Agrega un control de formulario con validaciones en el control tasks
    */
   addSubtask(){
-    this.tasks.push(this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(30)]));
+    this.tasks.push(this.formBuilder.control('',[Validators.minLength(15),Validators.maxLength(40)]));
   }
 
   /**
