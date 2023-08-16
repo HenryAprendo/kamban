@@ -35,22 +35,28 @@ export class DialogViewTaskAndUpdateProgressComponent {
 
   completedSubtasks:string;
 
+
   constructor(
     public dialogRef: MatDialogRef<DialogViewTaskAndUpdateProgressComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UpdateBoard
   ){
     this.buildForm();
-    this.data.task.subtasks.forEach(task => this.addControl(task.done));
-    this.editForm.get('status')?.setValue(this.data.task.status);
 
-    this.completedSubtasks = numberSubstasksDone(this.data.task.subtasks);
+    let dta = this.data.task;
 
-    this.editForm.valueChanges.subscribe((result:UpdateTask) => {
-      this.updateTask({...this.data},result);
-    });
+    dta.subtasks.forEach(subtask => this.addControl(subtask.done));
+
+    this.editForm.get('status')?.setValue(dta.status);
+
+    this.completedSubtasks = numberSubstasksDone(dta.subtasks);
+
+    this.editForm.valueChanges
+      .subscribe((result:UpdateTask) => {
+        this.updateTask({...this.data}, result, dta.status);
+      });
   }
 
-  private updateTask(data:UpdateBoard, dta:UpdateTask){
+  private updateTask(data:UpdateBoard, dta:UpdateTask, previusTaskStatus:States){
 
     let mapa = new Map<number,SubTasks>();
     data.task.subtasks.forEach((item,i) => mapa.set(i,{...item}));
@@ -68,7 +74,7 @@ export class DialogViewTaskAndUpdateProgressComponent {
     }
 
     this.completedSubtasks = numberSubstasksDone([...updateSubtasks]);
-    this.boardService.updateTaskOfBoard(data.boardId,updateTask);
+    this.boardService.updateTaskOfBoard(data.boardId,updateTask, previusTaskStatus);
   }
 
   private buildForm() {

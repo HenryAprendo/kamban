@@ -1,7 +1,8 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Board } from '../model/board.model';
 import { BehaviorSubject } from 'rxjs';
-import { Task } from './../model/task.model';
+import { States, Task } from './../model/task.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -79,26 +80,73 @@ export class BoardService {
     this.notify(board);
   }
 
-  updateTaskOfBoard(boardId:number,task:Task){
-    const index = this.getPositionIndex(boardId);
-    const board = this.boards()[index];
+  /**
+   * Actualiza una tarea y la board en la que se encuentra a nivel de toda la aplicación.
+   *
+   * @param boardId identificador de la board
+   * @param task tarea actual en la que se han registrado avances del proceso
+   * @param previusTaskStatus estatus anterior de la tarea que sirve para identificar el contenedor en que estaba
+   */
+  updateTaskOfBoard(boardId:number, task:Task, previusTaskStatus:States){
 
-    switch(task.status){
-      case 'TODO': {
-        let taskPositionIndex = board.listTodo.findIndex(item => item.taskId === task.taskId);
-        board.listTodo[taskPositionIndex] = {...task};
-        break;
+    const indexPosition = this.getPositionIndex(boardId);
+    const board = this.boards()[indexPosition];
+
+    let status = task.status;
+    let id = task.taskId;
+    let index = 0;
+
+    if(previusTaskStatus !== status){
+
+      // cambia de contenedor
+      switch(status){
+        case 'TODO': {
+          board.listTodo.push({...task});
+          break;
+        }
+        case 'DOING': {
+          board.listDoing.push({...task});
+          break;
+        }
+        case 'DONE': {
+          board.listDone.push({...task});
+          break;
+        }
       }
-      case 'DOING': {
-        let taskPositionIndex = board.listDoing.findIndex(item => item.taskId === task.taskId);
-        board.listDoing[taskPositionIndex] = {...task};
-        break;
+
+      //elimina del contenedor
+      switch(previusTaskStatus){
+        case 'TODO': {
+          this.deleteTaskOfArray(board.listTodo,id);
+          break;
+        }
+        case 'DOING': {
+          this.deleteTaskOfArray(board.listDoing,id);
+          break;
+        }
+        case 'DONE': {
+          this.deleteTaskOfArray(board.listDone,id);
+          break;
+        }
       }
-      case 'DONE': {
-        let taskPositionIndex = board.listDone.findIndex(item => item.taskId === task.taskId);
-        board.listDone[taskPositionIndex] = {...task};
-        break;
+
+    }
+    else {
+      switch(status){
+        case 'TODO': {
+          this.updateChangeOfTask(board.listTodo,task);
+          break;
+        }
+        case 'DOING': {
+          this.updateChangeOfTask(board.listDoing,task);
+          break;
+        }
+        case 'DONE': {
+          this.updateChangeOfTask(board.listDone,task);
+          break;
+        }
       }
+
     }
 
     this.updateBoard(boardId,board);
@@ -124,7 +172,46 @@ export class BoardService {
     return this.boards().findIndex(item => item.boardId === boardId);
   }
 
+  /**
+   *  Obtiene por medio del id la posición en el arreglo
+   *
+   * @param arr lista
+   * @param id identificador de la tarea
+   * @returns el index de la posición en el arreglo
+   */
+  private getPositionIndexOfArray(arr:Task[], id:number){
+    return arr.findIndex(item => item.taskId === id);
+  }
+
+  /**
+   * Elimina una tarea del contenedor previo al haber cambiado de contenedor por el estado
+   *
+   * @param tasks arreglo de tareas
+   * @param id identificador de la tarea actual
+   */
+  private deleteTaskOfArray(tasks:Task[], id:number){
+    let index = this.getPositionIndexOfArray(tasks, id);
+    tasks.splice(index);
+  }
+
+
+  /**
+   * Actualiza la tarea actual cuando han cambiado el estado de sus subtareas
+   *
+   * @param tasks arreglo de tareas
+   * @param task tarea actual que ha sido modificada
+   */
+  private updateChangeOfTask(tasks:Task[], task:Task){
+    let index = this.getPositionIndexOfArray(tasks, task.taskId);
+    tasks[index] = {...task};
+  }
+
 }
+
+
+
+
+
 
 
 
